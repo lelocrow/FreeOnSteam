@@ -141,8 +141,7 @@ gcloud run jobs add-iam-policy-binding "$SYNC_JOB_NAME" \
   --region="$GCP_REGION" \
   --project="$GCP_PROJECT_ID" \
   --member="serviceAccount:freeonsteam-scheduler@${GCP_PROJECT_ID}.iam.gserviceaccount.com" \
-  --role="roles/run.invoker" \
-  --condition=None
+  --role="roles/run.invoker"
 ```
 
 Create the OAuth Scheduler invocation:

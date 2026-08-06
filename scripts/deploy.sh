@@ -58,7 +58,7 @@ gcloud run jobs add-iam-policy-binding "${SYNC_JOB_NAME}" \
   --project="${GCP_PROJECT_ID}" \
   --member="serviceAccount:${SCHEDULER_SERVICE_ACCOUNT_EMAIL}" \
   --role="roles/run.invoker" \
-  --condition=None --quiet >/dev/null
+  --quiet >/dev/null
 
 SCHEDULER_URI="https://run.googleapis.com/v2/projects/${GCP_PROJECT_ID}/locations/${GCP_REGION}/jobs/${SYNC_JOB_NAME}:run"
 if gcloud scheduler jobs describe "${SCHEDULER_JOB_NAME}" --location="${GCP_REGION}" --project="${GCP_PROJECT_ID}" >/dev/null 2>&1; then
