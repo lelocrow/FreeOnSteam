@@ -74,6 +74,52 @@ describe("SteamStoreClient", () => {
     expect(decision.accepted).toBe(true);
   });
 
+  it("preserves package evidence for limited free promotions", async () => {
+    const mockFetch = vi.fn(async () =>
+      response({
+        "606150": {
+          success: true,
+          data: {
+            type: "game",
+            name: "Moonlighter",
+            is_free: true,
+            price_overview: {
+              currency: "BRL",
+              initial: 4100,
+              final: 4100,
+              discount_percent: 100,
+              final_formatted: "Free",
+            },
+            package_groups: [
+              {
+                subs: [
+                  {
+                    option_text: "Moonlighter Limited Free Promotional Package - Aug 2026 - Free",
+                    is_free_license: true,
+                    price_in_cents_with_discount: 0,
+                  },
+                  {
+                    option_text: "Moonlighter - R$ 41,00",
+                    is_free_license: false,
+                    price_in_cents_with_discount: 4100,
+                  },
+                ],
+              },
+            ],
+          },
+        },
+      }),
+    ) as unknown as typeof fetch;
+
+    const client = new SteamStoreClient(mockFetch, clientOptions);
+    const decision = await client.validateCandidate(606150);
+
+    expect(decision.accepted).toBe(true);
+    if (decision.accepted) {
+      expect(decision.promotion.name).toBe("Moonlighter");
+    }
+  });
+
   it("fails a malformed result page instead of fabricating candidates", async () => {
     const mockFetch = vi.fn(async () =>
       response({ total_count: 1, results_html: "<p>Unexpected markup</p>" }),

@@ -17,8 +17,24 @@ export const steamAppDataSchema = z.object({
       initial: z.number().int().nonnegative(),
       final: z.number().int().nonnegative(),
       discount_percent: z.number().int().min(0).max(100),
+      final_formatted: z.string().optional(),
     })
     .optional(),
   genres: z.array(z.object({ description: z.string().optional() })).optional(),
   categories: z.array(z.object({ description: z.string().optional() })).optional(),
+  package_groups: z
+    .array(
+      z.object({
+        subs: z
+          .array(
+            z.object({
+              option_text: z.string().optional(),
+              is_free_license: z.boolean().optional(),
+              price_in_cents_with_discount: z.number().int().nonnegative().optional(),
+            }),
+          )
+          .optional(),
+      }),
+    )
+    .optional(),
 });

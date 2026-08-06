@@ -12,13 +12,13 @@ The Cloud Run service, synchronization job, Scheduler job, and Artifact Registry
 
 ## Screenshot
 
-Add a current production screenshot at `docs/images/homepage.png` after deployment, then replace this paragraph with `![FreeOnSteam homepage](docs/images/homepage.png)`. Do not use sample games or fabricated promotions in the screenshot.
+![FreeOnSteam production homepage](docs/images/production/homepage.png)
 
 ## Features
 
 - Discovers candidates through Steam storefront sale search results.
 - Confirms every candidate through Steam app details for the `BR` region.
-- Requires an original price above zero, a current price of zero, a 100% discount, and `type = game`.
+- Requires an original price above zero, a current price of zero, a 100% discount, and `type = game`; package-backed giveaways must expose separate paid and limited-free promotional packages.
 - Rejects Free-to-Play games, permanently free titles, demos, DLC, software, videos, trials, and free weekends.
 - Preserves the previous successful dataset when Steam or synchronization fails.
 - Provides a responsive, accessible dark interface with Steam app and browser links.

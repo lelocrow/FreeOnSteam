@@ -36,6 +36,72 @@ describe("validatePromotion", () => {
     }
   });
 
+  it("accepts a package-backed limited free promotion", () => {
+    const decision = validatePromotion(606150, {
+      ...paidGame,
+      name: "Moonlighter",
+      is_free: true,
+      price_overview: {
+        currency: "BRL",
+        initial: 4100,
+        final: 4100,
+        discount_percent: 100,
+        final_formatted: "Free",
+      },
+      package_groups: [
+        {
+          subs: [
+            {
+              option_text: "Moonlighter Limited Free Promotional Package - Aug 2026 - Free",
+              is_free_license: true,
+              price_in_cents_with_discount: 0,
+            },
+            {
+              option_text: "Moonlighter - R$ 41,00",
+              is_free_license: false,
+              price_in_cents_with_discount: 4100,
+            },
+          ],
+        },
+      ],
+    });
+
+    expect(decision.accepted).toBe(true);
+    if (decision.accepted) {
+      expect(decision.promotion).toMatchObject({
+        appid: 606150,
+        name: "Moonlighter",
+        originalPriceCents: 4100,
+        currentPriceCents: 0,
+      });
+    }
+  });
+
+  it("rejects a free license without paid promotional-package evidence", () => {
+    expect(
+      validatePromotion(123, {
+        ...paidGame,
+        is_free: true,
+        price_overview: {
+          ...paidGame.price_overview!,
+          final: 4999,
+          final_formatted: "Free",
+        },
+        package_groups: [
+          {
+            subs: [
+              {
+                option_text: "Always Free Package",
+                is_free_license: true,
+                price_in_cents_with_discount: 0,
+              },
+            ],
+          },
+        ],
+      }),
+    ).toEqual({ accepted: false, reason: "free-to-play" });
+  });
+
   it.each([
     ["permanently free game", { is_free: true, price_overview: undefined }],
     ["Free-to-Play genre", { genres: [{ description: "Free to Play" }] }],

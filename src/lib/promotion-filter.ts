@@ -37,6 +37,33 @@ function sanitizedName(name: string): string {
   return name.replace(/[\u0000-\u001f\u007f]/g, "").trim().slice(0, 200);
 }
 
+function hasPackageBackedGiveaway(data: SteamAppData): boolean {
+  const price = data.price_overview;
+  if (
+    !price ||
+    price.initial <= 0 ||
+    price.discount_percent !== 100 ||
+    price.final_formatted?.trim().toLowerCase() !== "free"
+  ) {
+    return false;
+  }
+
+  const packageOptions = data.package_groups?.flatMap((group) => group.subs ?? []) ?? [];
+  const hasPaidPackage = packageOptions.some(
+    (option) =>
+      option.is_free_license === false &&
+      (option.price_in_cents_with_discount ?? 0) > 0,
+  );
+  const hasPromotionalFreePackage = packageOptions.some(
+    (option) =>
+      option.is_free_license === true &&
+      option.price_in_cents_with_discount === 0 &&
+      /\b(?:limited\s+)?free promotional package\b/i.test(option.option_text ?? ""),
+  );
+
+  return hasPaidPackage && hasPromotionalFreePackage;
+}
+
 function slugify(name: string, appid: number): string {
   const slug = name
     .normalize("NFKD")
@@ -73,7 +100,7 @@ export function validatePromotion(
   }
 
   const text = searchableText(data);
-  if (data.is_free !== false || matchesAny(text, freeToPlayPatterns)) {
+  if (matchesAny(text, freeToPlayPatterns)) {
     return { accepted: false, reason: "free-to-play" };
   }
 
@@ -82,15 +109,20 @@ export function validatePromotion(
   }
 
   const price = data.price_overview;
+  const packageBackedGiveaway = hasPackageBackedGiveaway(data);
+  if (data.is_free !== false && !packageBackedGiveaway) {
+    return { accepted: false, reason: "free-to-play" };
+  }
+
   if (!price || !/^[A-Z]{3}$/.test(price.currency.toUpperCase())) {
     return { accepted: false, reason: "ambiguous-pricing" };
   }
 
-  if (
-    price.initial <= 0 ||
-    price.final !== 0 ||
-    price.discount_percent !== 100
-  ) {
+  const hasStandardDiscount =
+    price.initial > 0 &&
+    price.final === 0 &&
+    price.discount_percent === 100;
+  if (!hasStandardDiscount && !packageBackedGiveaway) {
     return { accepted: false, reason: "not-fully-discounted" };
   }
 

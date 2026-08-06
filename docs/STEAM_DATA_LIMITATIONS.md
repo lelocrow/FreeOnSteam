@@ -8,7 +8,7 @@ All validation uses `cc=BR` and English response text. Prices, discounts, owners
 
 ## A zero price is not enough
 
-Steam search can include permanently free games, Free-to-Play games, demos, weekends, and trials. FreeOnSteam publishes an item only when app details establish an original price above zero, a current price of zero, a 100% discount, and base-game type. Missing or contradictory data is rejected.
+Steam search can include permanently free games, Free-to-Play games, demos, weekends, and trials. FreeOnSteam publishes an item only when app details establish an original price above zero, a current price of zero, a 100% discount, and base-game type. Steam can mark a temporary giveaway as `is_free` and leave its numeric final price unchanged; this case is accepted only when package metadata also exposes both a specifically named limited free promotional package and a separately priced paid package. Missing or unresolved contradictory data is rejected.
 
 ## Temporary access
 

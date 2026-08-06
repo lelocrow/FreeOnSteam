@@ -3,6 +3,13 @@ export type SteamPriceOverview = {
   initial: number;
   final: number;
   discount_percent: number;
+  final_formatted?: string;
+};
+
+export type SteamPackageOption = {
+  option_text?: string;
+  is_free_license?: boolean;
+  price_in_cents_with_discount?: number;
 };
 
 export type SteamAppData = {
@@ -14,6 +21,7 @@ export type SteamAppData = {
   price_overview?: SteamPriceOverview;
   genres?: Array<{ description?: string }>;
   categories?: Array<{ description?: string }>;
+  package_groups?: Array<{ subs?: SteamPackageOption[] }>;
 };
 
 export type ValidatedPromotion = {

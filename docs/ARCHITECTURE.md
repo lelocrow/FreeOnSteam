@@ -44,14 +44,15 @@ The adapter deliberately fails a synchronization when a result page is malformed
 `src/lib/promotion-filter.ts` accepts a title only when every required condition is established:
 
 - `type` is exactly `game`.
-- `is_free` is explicitly `false`.
 - Original price is greater than zero.
 - Current price is zero.
 - Discount percentage is exactly 100.
 - Currency is present and valid.
 - Text and genre metadata do not indicate Free-to-Play or temporary access.
+- Standard discounts require `is_free = false` and a numeric final price of zero.
+- Giveaways that Steam reports with `is_free = true` require a zero-cost limited free promotional package alongside a separately priced paid package.
 
-Demos, DLC, music, software, and videos fail the type check. Free weekends and trials fail conservative text checks. Missing or malformed pricing is rejected as ambiguous.
+Demos, DLC, music, software, and videos fail the type check. Free weekends and trials fail conservative text checks. Missing or malformed pricing and package evidence is rejected as ambiguous or Free-to-Play.
 
 ## Firestore data model
 
