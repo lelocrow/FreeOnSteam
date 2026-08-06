@@ -110,7 +110,7 @@ export default async function Home() {
             </div>
           ) : (
             <div className="divide-y divide-white/10 border-y border-white/10">
-              {response.games.map((game) => <GameCard key={game.appid} game={game} />)}
+              {response.games.map((game) => <GameCard key={`${game.appid}:${game.currency}:${game.originalPriceCents}`} game={game} />)}
             </div>
           )}
         </section>
@@ -119,7 +119,7 @@ export default async function Home() {
       <footer className="border-t border-white/10 bg-[#081422]">
         <div className="mx-auto grid max-w-7xl gap-3 px-5 py-5 text-xs leading-5 text-slate-500 sm:grid-cols-2 sm:px-8 lg:px-10">
           <p>Independent project. Not affiliated with Valve Corporation or Steam.</p>
-          <p className="sm:text-right">Prices are checked in the Brazilian Steam region and may vary. Complete the claim inside Steam.</p>
+          <p className="sm:text-right">Regional prices use your browser locale when Steam can verify the offer; US pricing is the fallback. Complete the claim inside Steam.</p>
         </div>
       </footer>
 

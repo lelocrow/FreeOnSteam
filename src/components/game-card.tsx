@@ -1,9 +1,13 @@
 "use client";
 
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
-import type { PublicGame } from "@/lib/types";
+import {
+  countryFromLanguageTags,
+  defaultStoreCountry,
+} from "@/lib/store-region";
+import type { PublicGame, RegionalPriceResponse } from "@/lib/types";
 
 function formatPrice(cents: number, currency: string): string {
   try {
@@ -14,6 +18,20 @@ function formatPrice(cents: number, currency: string): string {
   } catch {
     return `${currency} ${(cents / 100).toFixed(2)}`;
   }
+}
+
+function isRegionalPriceResponse(value: unknown): value is RegionalPriceResponse {
+  if (typeof value !== "object" || value === null) return false;
+  const response = value as Partial<RegionalPriceResponse>;
+  return (
+    typeof response.country === "string" &&
+    /^[A-Z]{2}$/.test(response.country) &&
+    typeof response.originalPriceCents === "number" &&
+    response.originalPriceCents > 0 &&
+    typeof response.currency === "string" &&
+    /^[A-Z]{3}$/.test(response.currency) &&
+    typeof response.fallback === "boolean"
+  );
 }
 
 function formatEndDate(value: string | null): string {
@@ -28,7 +46,41 @@ function formatEndDate(value: string | null): string {
 export function GameCard({ game }: { game: PublicGame }) {
   const [imageFailed, setImageFailed] = useState(false);
   const [steamHintVisible, setSteamHintVisible] = useState(false);
+  const [regionalPrice, setRegionalPrice] =
+    useState<RegionalPriceResponse | null>(null);
+  const displayPrice = regionalPrice ?? {
+    country: defaultStoreCountry,
+    currency: game.currency,
+    fallback: true,
+    originalPriceCents: game.originalPriceCents,
+  };
   const hintId = `steam-hint-${game.appid}`;
+
+  useEffect(() => {
+    const languageTags = navigator.languages.length
+      ? navigator.languages
+      : [navigator.language];
+    const country = countryFromLanguageTags(languageTags);
+    if (!country || country === defaultStoreCountry) return;
+
+    const controller = new AbortController();
+    fetch(`/api/games/${game.appid}/price?country=${country}`, {
+      headers: { Accept: "application/json" },
+      signal: controller.signal,
+    })
+      .then(async (response) => {
+        if (!response.ok) return null;
+        const payload: unknown = await response.json();
+        return isRegionalPriceResponse(payload) ? payload : null;
+      })
+      .then((regionalPrice) => {
+        if (!regionalPrice) return;
+        setRegionalPrice(regionalPrice);
+      })
+      .catch(() => undefined);
+
+    return () => controller.abort();
+  }, [game.appid]);
 
   return (
     <article className="group grid gap-4 py-5 sm:grid-cols-[minmax(260px,38%)_minmax(0,1fr)] sm:items-center sm:gap-5 lg:grid-cols-[minmax(320px,380px)_minmax(0,1fr)_11rem] lg:gap-6">
@@ -54,8 +106,15 @@ export function GameCard({ game }: { game: PublicGame }) {
         <h3 className="text-lg font-semibold leading-6 tracking-[-0.01em] text-white">{game.name}</h3>
         <div className="mt-3 flex flex-wrap items-end gap-x-8 gap-y-3">
           <div>
-            <p className="text-xs uppercase tracking-[0.13em] text-slate-500">Regular price</p>
-            <s className="mt-1 block text-sm font-medium text-slate-300">{formatPrice(game.originalPriceCents, game.currency)}</s>
+            <p className="text-xs uppercase tracking-[0.13em] text-slate-500">
+              Regular price · {displayPrice.fallback ? "US fallback" : displayPrice.country}
+            </p>
+            <s className="mt-1 block text-sm font-medium text-slate-300">
+              {formatPrice(
+                displayPrice.originalPriceCents,
+                displayPrice.currency,
+              )}
+            </s>
           </div>
           <div>
             <p className="text-xs uppercase tracking-[0.13em] text-slate-500">Now</p>

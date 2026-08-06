@@ -4,7 +4,7 @@ FreeOnSteam integrates with public Steam storefront endpoints. These endpoints a
 
 ## Regional sensitivity
 
-All validation uses `cc=BR` and English response text. Prices, discounts, ownership eligibility, age gates, publisher restrictions, and availability can differ by Steam account region or account state. A Brazilian storefront result is not a guarantee for another account.
+Scheduled discovery and fallback validation use `cc=US` and English response text. In the browser, a locale containing an explicit two-letter region triggers a same-origin regional price lookup; Steam must validate the same promotion for that country before its price is displayed. Missing locale regions, failed lookups, and unverified regional promotions retain US pricing. Browser locale is a preference rather than proof of physical location, and prices, ownership eligibility, age gates, publisher restrictions, and availability can still differ by Steam account region or account state.
 
 ## A zero price is not enough
 

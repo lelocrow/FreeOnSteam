@@ -32,12 +32,14 @@ Scheduler sends an authenticated OAuth `POST` to the Cloud Run Jobs v2 `:run` en
 
 `src/lib/steam/client.ts` isolates the unofficial storefront integration. It uses:
 
-- Store search discovery with `specials=1`, `maxprice=free`, `category1=998`, `cc=BR`, and `l=english`.
+- Store search discovery with `specials=1`, `maxprice=free`, `category1=998`, `cc=US`, and `l=english`.
 - Sequential app-details validation for each deduplicated App ID.
 - A descriptive User-Agent, request timeout, limited retries, exponential backoff, and configurable delay.
 - Zod response validation and a hard pagination safety limit.
 
 The adapter deliberately fails a synchronization when a result page is malformed or its required structure disappears. It never fabricates candidates.
+
+The stored price uses the US storefront as a deterministic fallback. After hydration, the browser derives a two-letter country from an explicit region in its locale and requests `GET /api/games/{appid}/price?country=XX`. That endpoint only accepts active App IDs, reuses the same strict promotion validator, caches successful lookups, and returns the stored US price when the regional promotion cannot be verified. No IP geolocation service or cross-origin browser request to Steam is used.
 
 ## Validation boundary
 
@@ -65,9 +67,9 @@ Demos, DLC, music, software, and videos fail the type check. Free weekends and t
 | `slug` | string | Stable display slug. |
 | `type` | `game` | Validated base-game type. |
 | `headerImage` | string or null | Allowlisted HTTPS Steam image URL. |
-| `originalPriceCents` | number | Original Brazilian-region price in minor units. |
+| `originalPriceCents` | number | Original US fallback price in minor units. |
 | `currentPriceCents` | `0` | Required current price. |
-| `currency` | string | Three-letter currency code, normally `BRL`. |
+| `currency` | string | Three-letter currency code, `USD` for the stored fallback. |
 | `discountPercent` | `100` | Required discount percentage. |
 | `storeUrl` | string | Generated HTTPS Steam browser URL. |
 | `steamClientUrl` | string | Generated `steam://store/{appid}` URL. |

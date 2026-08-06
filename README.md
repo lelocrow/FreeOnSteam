@@ -1,6 +1,6 @@
 # FreeOnSteam
 
-FreeOnSteam is an independent web application that finds normally paid Steam games temporarily discounted by 100% and available to add to an account for free. It validates offers against Steam's Brazilian storefront region, rejects Free-to-Play and temporary-access titles, and serves the last successful dataset from Firestore.
+FreeOnSteam is an independent web application that finds normally paid Steam games temporarily discounted by 100% and available to add to an account for free. It validates offers against Steam's US storefront as a stable fallback, rejects Free-to-Play and temporary-access titles, and serves the last successful dataset from Firestore.
 
 > FreeOnSteam is not affiliated with, endorsed by, or sponsored by Valve Corporation or Steam. Price and availability can vary by Steam account region. Always verify an offer and complete the add-to-account action on Steam.
 
@@ -17,7 +17,8 @@ The Cloud Run service, synchronization job, Scheduler job, and Artifact Registry
 ## Features
 
 - Discovers candidates through Steam storefront sale search results.
-- Confirms every candidate through Steam app details for the `BR` region.
+- Confirms every scheduled candidate through Steam app details for the `US` fallback region.
+- Resolves regular prices for the browser locale's country when Steam verifies the same promotion there, otherwise retaining US pricing.
 - Requires an original price above zero, a current price of zero, a 100% discount, and `type = game`; package-backed giveaways must expose separate paid and limited-free promotional packages.
 - Rejects Free-to-Play games, permanently free titles, demos, DLC, software, videos, trials, and free weekends.
 - Preserves the previous successful dataset when Steam or synchronization fails.
@@ -68,7 +69,7 @@ The application does not require API keys. It uses Google Application Default Cr
 | `FIRESTORE_DATABASE` | `(default)` | Firestore Native database ID. |
 | `SITE_URL` | `http://localhost:3000` | Canonical production origin. |
 | `STALE_AFTER_MINUTES` | `90` | Age after which the last success is considered stale. |
-| `STEAM_COUNTRY` | `BR` | Steam region used for price validation. |
+| `STEAM_COUNTRY` | `US` | Steam region used for scheduled validation and fallback pricing. |
 | `STEAM_LANGUAGE` | `english` | Steam response language. |
 | `STEAM_PAGE_SIZE` | `50` | Conservative search page size. |
 | `STEAM_MAX_PAGES` | `20` | Safety limit that prevents unbounded crawling. |
@@ -142,7 +143,7 @@ See [Deployment](docs/DEPLOYMENT.md) for exact commands and rollback, and [Opera
 
 ## Synchronization behavior
 
-1. Request every relevant Steam sale search page using `specials=1`, `maxprice=free`, `category1=998`, `cc=BR`, and `l=english`.
+1. Request every relevant Steam sale search page using `specials=1`, `maxprice=free`, `category1=998`, `cc=US`, and `l=english`.
 2. Extract and deduplicate Steam App IDs.
 3. Request app details sequentially with timeout, retry, backoff, and delay controls.
 4. Apply strict promotion validation.

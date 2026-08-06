@@ -51,7 +51,7 @@ gcloud run jobs deploy "${SYNC_JOB_NAME}" \
   --tasks=1 \
   --max-retries=1 \
   --task-timeout=20m \
-  --set-env-vars="FIRESTORE_DATABASE=${FIRESTORE_DATABASE},STEAM_COUNTRY=BR,STEAM_LANGUAGE=english,STEAM_MAX_PAGES=20"
+  --set-env-vars="FIRESTORE_DATABASE=${FIRESTORE_DATABASE},STEAM_COUNTRY=US,STEAM_LANGUAGE=english,STEAM_MAX_PAGES=20"
 
 gcloud run jobs add-iam-policy-binding "${SYNC_JOB_NAME}" \
   --region="${GCP_REGION}" \

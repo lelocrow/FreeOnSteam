@@ -48,3 +48,10 @@ export type GamesResponse = {
   stale: boolean;
   games: PublicGame[];
 };
+
+export type RegionalPriceResponse = {
+  country: string;
+  originalPriceCents: number;
+  currency: string;
+  fallback: boolean;
+};

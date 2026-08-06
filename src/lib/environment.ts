@@ -18,7 +18,7 @@ export const runtimeConfig = {
 };
 
 export const steamConfig = {
-  country: process.env.STEAM_COUNTRY || "BR",
+  country: process.env.STEAM_COUNTRY || "US",
   language: process.env.STEAM_LANGUAGE || "english",
   pageSize: positiveInteger("STEAM_PAGE_SIZE", 50),
   maxPages: positiveInteger("STEAM_MAX_PAGES", 20),

@@ -1,5 +1,4 @@
 import type { Metadata, Viewport } from "next";
-import Script from "next/script";
 
 import "./globals.css";
 
@@ -23,7 +22,7 @@ export const metadata: Metadata = {
     siteName: "FreeOnSteam",
     title: "Paid Steam games free to keep",
     description:
-      "Track genuine 100% discounts on paid Steam games, validated for the Brazilian store region.",
+      "Track genuine 100% discounts on paid Steam games with regional pricing and a US fallback.",
     url: "/",
     images: [{ url: "/social-card.svg", width: 1200, height: 630, alt: "FreeOnSteam" }],
   },
@@ -43,13 +42,14 @@ export const viewport: Viewport = {
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en">
-      <body>
-        <Script
+      <head>
+        <script
           async
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-9490916828812211"
           crossOrigin="anonymous"
-          strategy="afterInteractive"
         />
+      </head>
+      <body>
         {children}
       </body>
     </html>

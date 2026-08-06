@@ -131,7 +131,7 @@ gcloud run jobs deploy "$SYNC_JOB_NAME" \
   --service-account="freeonsteam-sync@${GCP_PROJECT_ID}.iam.gserviceaccount.com" \
   --command=node --args=dist/sync.cjs \
   --cpu=1 --memory=512Mi --tasks=1 --max-retries=1 --task-timeout=20m \
-  --set-env-vars="FIRESTORE_DATABASE=${FIRESTORE_DATABASE},STEAM_COUNTRY=BR,STEAM_LANGUAGE=english,STEAM_MAX_PAGES=20"
+  --set-env-vars="FIRESTORE_DATABASE=${FIRESTORE_DATABASE},STEAM_COUNTRY=US,STEAM_LANGUAGE=english,STEAM_MAX_PAGES=20"
 ```
 
 Grant the Scheduler identity permission on only that job:
