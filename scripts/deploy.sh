@@ -72,7 +72,7 @@ if gcloud scheduler jobs describe "${SCHEDULER_JOB_NAME}" --location="${GCP_REGI
     --http-method=POST \
     --oauth-service-account-email="${SCHEDULER_SERVICE_ACCOUNT_EMAIL}" \
     --oauth-token-scope="https://www.googleapis.com/auth/cloud-platform" \
-    --headers="Content-Type=application/json" \
+    --update-headers="Content-Type=application/json" \
     --message-body='{}' \
     --attempt-deadline=600s
 else
