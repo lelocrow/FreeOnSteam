@@ -1,0 +1,14 @@
+.git
+.github
+.next
+node_modules
+coverage
+dist
+.npm-cache
+.gcloud
+.gcloud-tmp
+.env*
+!.env.example
+docs
+tests
+*.log

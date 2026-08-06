@@ -1,0 +1,35 @@
+#!/usr/bin/env bash
+
+: "${GCP_PROJECT_ID:?Set GCP_PROJECT_ID to the target Google Cloud project.}"
+
+GCP_REGION="${GCP_REGION:-us-east4}"
+FIRESTORE_DATABASE="${FIRESTORE_DATABASE:-(default)}"
+WEB_SERVICE_NAME="${WEB_SERVICE_NAME:-freeonsteam-web}"
+SYNC_JOB_NAME="${SYNC_JOB_NAME:-freeonsteam-sync}"
+SCHEDULER_JOB_NAME="${SCHEDULER_JOB_NAME:-freeonsteam-every-30-minutes}"
+ARTIFACT_REPOSITORY="${ARTIFACT_REPOSITORY:-freeonsteam}"
+SCHEDULER_TIME_ZONE="${SCHEDULER_TIME_ZONE:-America/Sao_Paulo}"
+
+WEB_SERVICE_ACCOUNT="${WEB_SERVICE_ACCOUNT:-freeonsteam-web}"
+SYNC_SERVICE_ACCOUNT="${SYNC_SERVICE_ACCOUNT:-freeonsteam-sync}"
+SCHEDULER_SERVICE_ACCOUNT="${SCHEDULER_SERVICE_ACCOUNT:-freeonsteam-scheduler}"
+
+WEB_SERVICE_ACCOUNT_EMAIL="${WEB_SERVICE_ACCOUNT}@${GCP_PROJECT_ID}.iam.gserviceaccount.com"
+SYNC_SERVICE_ACCOUNT_EMAIL="${SYNC_SERVICE_ACCOUNT}@${GCP_PROJECT_ID}.iam.gserviceaccount.com"
+SCHEDULER_SERVICE_ACCOUNT_EMAIL="${SCHEDULER_SERVICE_ACCOUNT}@${GCP_PROJECT_ID}.iam.gserviceaccount.com"
+
+export GCP_PROJECT_ID GCP_REGION FIRESTORE_DATABASE WEB_SERVICE_NAME SYNC_JOB_NAME
+export SCHEDULER_JOB_NAME ARTIFACT_REPOSITORY SCHEDULER_TIME_ZONE
+export WEB_SERVICE_ACCOUNT SYNC_SERVICE_ACCOUNT SCHEDULER_SERVICE_ACCOUNT
+export WEB_SERVICE_ACCOUNT_EMAIL SYNC_SERVICE_ACCOUNT_EMAIL SCHEDULER_SERVICE_ACCOUNT_EMAIL
+
+require_command() {
+  if ! command -v "$1" >/dev/null 2>&1; then
+    echo "Required command not found: $1" >&2
+    exit 1
+  fi
+}
+
+active_account() {
+  gcloud auth list --filter=status:ACTIVE --format='value(account)' | head -n 1
+}
