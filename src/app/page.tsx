@@ -109,7 +109,7 @@ export default async function Home() {
               <p className="mx-auto mt-2 max-w-lg text-sm leading-6 text-slate-400">The list is checked every 30 minutes. Only paid games with a verified 100% discount appear here.</p>
             </div>
           ) : (
-            <div className="grid gap-5 sm:grid-cols-2 xl:grid-cols-3">
+            <div className="divide-y divide-white/10 border-y border-white/10">
               {response.games.map((game) => <GameCard key={game.appid} game={game} />)}
             </div>
           )}
