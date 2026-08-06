@@ -9,7 +9,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build && npm run build:sync",
-    "build:sync": "esbuild src/sync/run.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/sync.cjs --external:@google-cloud/firestore",
+    "build:sync": "esbuild src/sync/run.ts --bundle --platform=node --target=node24 --format=cjs --outfile=dist/sync.cjs",
     "start": "next start",
     "sync": "tsx src/sync/run.ts",
     "lint": "eslint .",
