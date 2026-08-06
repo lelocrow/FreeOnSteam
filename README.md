@@ -6,7 +6,9 @@ FreeOnSteam is an independent web application that finds normally paid Steam gam
 
 ## Live application
 
-The production Cloud Run URL is added here after the first verified deployment.
+[Open FreeOnSteam](https://freeonsteam-web-hl44g7zlwa-uk.a.run.app)
+
+The Cloud Run service, synchronization job, Scheduler job, and Artifact Registry repository run in Northern Virginia (`us-east4`). The project's existing Firestore Native `(default)` database was safely reused in the `nam5` United States multi-region because Firestore locations are immutable.
 
 ## Screenshot
 
