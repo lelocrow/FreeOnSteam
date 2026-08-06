@@ -1,3 +1,5 @@
+import Image from "next/image";
+
 import { GameCard } from "@/components/game-card";
 import { GamesRepository } from "@/lib/firestore/repository";
 import { buildGamesResponse } from "@/lib/games-response";
@@ -31,9 +33,15 @@ async function loadGames(): Promise<GamesResponse | null> {
 function BrandMark() {
   return (
     <div className="flex items-center gap-2.5" aria-label="FreeOnSteam home">
-      <span className="grid size-7 place-items-center rounded-md bg-cyan-300 text-xs font-bold text-[#05121d]">
-        F
-      </span>
+      <Image
+        src="/images/brand/logo.png"
+        alt=""
+        width={500}
+        height={553}
+        sizes="32px"
+        priority
+        className="h-8 w-auto shrink-0 object-contain"
+      />
       <span className="text-base font-semibold tracking-[-0.02em] text-white">
         Free<span className="text-cyan-300">On</span>Steam
       </span>
