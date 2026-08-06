@@ -1,5 +1,26 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
-  <rect width="64" height="64" rx="16" fill="#07111f"/>
-  <path d="M15 16h36v9H24v7h21v9H24v12h-9z" fill="#e2f8ff"/>
-  <circle cx="48" cy="49" r="8" fill="#67e8f9"/>
+<svg
+  xmlns="http://www.w3.org/2000/svg"
+  viewBox="0 0 1024 1024"
+  role="img"
+  aria-labelledby="title desc"
+>
+  <title id="title">FreeOnSteam logo</title>
+  <desc id="desc">Minimal cyan gift box with an integrated letter F on a dark navy background.</desc>
+
+  <rect width="1024" height="1024" fill="#061321"/>
+
+  <g
+    fill="none"
+    stroke="#58E4F7"
+    stroke-width="34"
+    stroke-linecap="round"
+    stroke-linejoin="round"
+  >
+    <path d="M500 378 C452 298 402 270 360 290 C318 310 320 366 350 397 C380 428 431 420 500 420"/>
+    <path d="M524 378 C572 298 622 270 664 290 C706 310 704 366 674 397 C644 428 593 420 524 420"/>
+    <path d="M314 420 H710 V500 H314 Z"/>
+    <path d="M338 500 H686 V724 C686 742 672 756 654 756 H370 C352 756 338 742 338 724 Z"/>
+    <path d="M512 420 V756"/>
+    <path d="M512 500 H650 M512 594 H614"/>
+  </g>
 </svg>
