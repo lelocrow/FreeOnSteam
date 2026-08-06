@@ -31,7 +31,7 @@ export function GameCard({ game }: { game: PublicGame }) {
   const hintId = `steam-hint-${game.appid}`;
 
   return (
-    <article className="group overflow-hidden rounded-3xl border border-white/10 bg-[#0b1727]/90 shadow-xl shadow-black/15 transition duration-300 hover:-translate-y-1 hover:border-cyan-300/25 hover:shadow-cyan-950/20 motion-reduce:transform-none motion-reduce:transition-none">
+    <article className="group overflow-hidden rounded-xl border border-white/10 bg-[#0b1727] transition-colors hover:border-cyan-300/25 motion-reduce:transition-none">
       <div className="relative aspect-[460/215] overflow-hidden bg-[radial-gradient(circle_at_30%_20%,rgba(34,211,238,0.16),transparent_35%),linear-gradient(135deg,#10233a,#09131f)]">
         {game.headerImage && !imageFailed ? (
           <Image
@@ -48,11 +48,11 @@ export function GameCard({ game }: { game: PublicGame }) {
           </div>
         )}
         <div className="absolute inset-x-0 bottom-0 h-20 bg-gradient-to-t from-[#0b1727] to-transparent" />
-        <span className="absolute right-4 top-4 rounded-full border border-emerald-200/20 bg-emerald-400/90 px-3 py-1 text-xs font-extrabold tracking-wide text-emerald-950 shadow-lg">100% OFF</span>
+        <span className="absolute right-3 top-3 rounded-md border border-emerald-200/20 bg-emerald-400/90 px-2.5 py-1 text-xs font-bold tracking-wide text-emerald-950">100% OFF</span>
       </div>
 
-      <div className="p-5">
-        <h3 className="line-clamp-2 min-h-14 text-lg font-semibold leading-7 tracking-[-0.02em] text-white">{game.name}</h3>
+      <div className="p-4">
+        <h3 className="line-clamp-2 min-h-12 text-base font-semibold leading-6 tracking-[-0.01em] text-white">{game.name}</h3>
         <div className="mt-4 flex items-center justify-between gap-4">
           <div>
             <p className="text-xs uppercase tracking-[0.13em] text-slate-500">Regular price</p>
@@ -64,14 +64,14 @@ export function GameCard({ game }: { game: PublicGame }) {
           </div>
         </div>
 
-        <div className="mt-5 border-t border-white/8 pt-4">
+        <div className="mt-4 border-t border-white/8 pt-4">
           <p className="text-xs text-slate-500">{formatEndDate(game.promotionEndsAt)}</p>
           <div className="mt-4 grid grid-cols-2 gap-3">
             <a
               href={game.steamClientUrl}
               aria-describedby={hintId}
               onClick={() => setSteamHintVisible(true)}
-              className="inline-flex min-h-11 items-center justify-center rounded-xl bg-cyan-300 px-3 text-center text-sm font-semibold text-[#05121d] transition hover:bg-cyan-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300 motion-reduce:transition-none"
+              className="inline-flex min-h-10 items-center justify-center rounded-lg bg-cyan-300 px-3 text-center text-sm font-semibold text-[#05121d] transition hover:bg-cyan-200 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300 motion-reduce:transition-none"
             >
               Open Steam app
             </a>
@@ -79,7 +79,7 @@ export function GameCard({ game }: { game: PublicGame }) {
               href={game.storeUrl}
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex min-h-11 items-center justify-center rounded-xl border border-white/12 bg-white/5 px-3 text-center text-sm font-semibold text-white transition hover:border-white/25 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300 motion-reduce:transition-none"
+              className="inline-flex min-h-10 items-center justify-center rounded-lg border border-white/12 bg-white/5 px-3 text-center text-sm font-semibold text-white transition hover:border-white/25 hover:bg-white/10 focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cyan-300 motion-reduce:transition-none"
             >
               Open browser
             </a>
