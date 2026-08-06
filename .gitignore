@@ -1,0 +1,33 @@
+# dependencies
+/node_modules
+/.pnp
+.pnp.*
+
+# tests and builds
+/coverage
+/dist
+/.next
+/out
+*.tsbuildinfo
+
+# local caches
+/.npm-cache
+/.turbo
+
+# local environment files
+.env*
+!.env.example
+
+# cloud and editor state
+/.gcloud
+/.gcloud-tmp
+.vscode/
+.idea/
+
+# operating system files
+.DS_Store
+Thumbs.db
+
+# logs
+*.log
+npm-debug.log*
